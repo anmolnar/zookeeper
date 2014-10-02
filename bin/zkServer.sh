@@ -21,16 +21,19 @@
 # relative to the canonical path of this script.
 #
 
+if [ -z "${ZOOKEEPER_HOME}" ]; then
+  # use POSIX interface, symlink is followed automatically
+  ZOOBIN="${BASH_SOURCE-$0}"
+  ZOOBIN="$(dirname "${ZOOBIN}")"
+  ZOOBINDIR="$(cd "${ZOOBIN}"; pwd)"
 
-# use POSTIX interface, symlink is followed automatically
-ZOOBIN="${BASH_SOURCE-$0}"
-ZOOBIN="$(dirname "${ZOOBIN}")"
-ZOOBINDIR="$(cd "${ZOOBIN}"; pwd)"
-
-if [ -e "$ZOOBIN/../libexec/zkEnv.sh" ]; then
-  . "$ZOOBINDIR"/../libexec/zkEnv.sh
+  if [ -e "$ZOOBIN/../libexec/zkEnv.sh" ]; then
+    . "$ZOOBINDIR"/../libexec/zkEnv.sh
+  else
+    . "$ZOOBINDIR"/zkEnv.sh
+  fi
 else
-  . "$ZOOBINDIR"/zkEnv.sh
+  . "${ZOOKEEPER_HOME}/bin/zkEnv.sh"
 fi
 
 # See the following page for extensive details on setting
@@ -74,6 +77,8 @@ else
     echo "JMX disabled by user request" >&2
     ZOOMAIN="org.apache.zookeeper.server.quorum.QuorumPeerMain"
 fi
+
+
 
 if [ "x$SERVER_JVMFLAGS" != "x" ]
 then
