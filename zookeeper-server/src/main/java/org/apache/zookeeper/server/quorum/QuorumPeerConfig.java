@@ -39,6 +39,7 @@ import java.util.Map.Entry;
 import org.apache.yetus.audience.InterfaceAudience;
 import org.apache.zookeeper.common.ClientX509Util;
 import org.apache.zookeeper.common.StringUtils;
+import org.apache.zookeeper.server.util.JvmPauseMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -113,6 +114,23 @@ public class QuorumPeerConfig {
      * @see org.apache.zookeeper.server.PurgeTxnLog#purge(File, File, int)
      */
     private final int MIN_SNAP_RETAIN_COUNT = 3;
+
+    /**
+     * JVM Pause Monitor feature switch
+     */
+    protected boolean jvmPauseMonitorToRun = false;
+    /**
+     * JVM Pause Monitor warn threshold in ms
+     */
+    protected long jvmPauseWarnThresholdMs = JvmPauseMonitor.WARN_THRESHOLD_DEFAULT;
+    /**
+     * JVM Pause Monitor info threshold in ms
+     */
+    protected long jvmPauseInfoThresholdMs = JvmPauseMonitor.INFO_THRESHOLD_DEFAULT;
+    /**
+     * JVM Pause Monitor sleep time in ms
+     */
+    protected long jvmPauseSleepTimeMs = JvmPauseMonitor.SLEEP_TIME_MS_DEFAULT;
 
     @SuppressWarnings("serial")
     public static class ConfigException extends Exception {
@@ -328,6 +346,14 @@ public class QuorumPeerConfig {
                 quorumServicePrincipal = value;
             } else if (key.equals("quorum.cnxn.threads.size")) {
                 quorumCnxnThreadsSize = Integer.parseInt(value);
+            } else if (key.equals(JvmPauseMonitor.INFO_THRESHOLD_KEY)) {
+                jvmPauseInfoThresholdMs = Long.parseLong(value);
+            } else if (key.equals(JvmPauseMonitor.WARN_THRESHOLD_KEY)) {
+                jvmPauseWarnThresholdMs = Long.parseLong(value);
+            } else if (key.equals(JvmPauseMonitor.SLEEP_TIME_MS_KEY)) {
+                jvmPauseSleepTimeMs = Long.parseLong(value);
+            } else if (key.equals(JvmPauseMonitor.JVM_PAUSE_MONITOR_FEATURE_SWITCH_KEY)) {
+                jvmPauseMonitorToRun = Boolean.parseBoolean(value);
             } else {
                 System.setProperty("zookeeper." + key, value);
             }
@@ -412,7 +438,7 @@ public class QuorumPeerConfig {
         if (minSessionTimeout > maxSessionTimeout) {
             throw new IllegalArgumentException(
                     "minSessionTimeout must not be larger than maxSessionTimeout");
-        }          
+        }
 
         // backward compatibility - dynamic configuration in the same file as
         // static configuration params see writeDynamicConfig()
@@ -658,14 +684,14 @@ public class QuorumPeerConfig {
             /*
              * If using FLE, then every server requires a separate election
              * port.
-             */            
+             */
            if (eAlg != 0) {
                for (QuorumServer s : qv.getVotingMembers().values()) {
                    if (s.electionAddr == null)
                        throw new IllegalArgumentException(
                                "Missing election port for server: " + s.id);
                }
-           }   
+           }
         }
         return qv;
     }
@@ -784,6 +810,19 @@ public class QuorumPeerConfig {
     public Map<Long,QuorumServer> getServers() {
         // returns all configuration servers -- participants and observers
         return Collections.unmodifiableMap(quorumVerifier.getAllMembers());
+    }
+
+    public long getJvmPauseInfoThresholdMs() {
+        return jvmPauseInfoThresholdMs;
+    }
+    public long getJvmPauseWarnThresholdMs() {
+        return jvmPauseWarnThresholdMs;
+    }
+    public long getJvmPauseSleepTimeMs() {
+        return jvmPauseSleepTimeMs;
+    }
+    public boolean isJvmPauseMonitorToRun() {
+        return jvmPauseMonitorToRun;
     }
 
     public long getServerId() { return serverId; }
