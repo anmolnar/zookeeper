@@ -853,7 +853,7 @@ xmlns:cs="antlib:com.puppycrawl.tools.checkstyle.ant">
         <fileset dir="${conf.dir}" excludes="**/*.template"/>
       </copy>
 
-      <copy todir="${dist.dir}/zookeeper-docs">
+      <copy todir="${dist.dir}/docs">
           <fileset dir="zookeeper-docs/src/main/resources/markdown/" includes="**">
               <exclude name="html/**" />
           </fileset>
