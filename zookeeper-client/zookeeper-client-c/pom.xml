@@ -36,49 +36,12 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate-sources</id>
-            <phase>generate-sources</phase>
-            <configuration>
-              <tasks>
-                <mkdir dir="target/c" />
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>test-cppunit</id>
-            <phase>test</phase>
-            <configuration>
-              <tasks>
-                <exec dir="${basedir}/target/c" executable="make" failonerror="true">
-                  <env key="LD_LIBRARY_PATH" value="${env.LD_LIBRARY_PATH};/usr/lib" />
-                  <env key="PATH" path="${env.PATH};${basedir};" />
-                  <env key="CALLER" value="ANT" />
-                  <env key="CLOVER_HOME" value="${basedir}/../../zookeeper-server/target" />
-                  <env key="base_dir" value="${basedir}/../.." />
-                  <arg line="clean check" />
-                </exec>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <executions>
           <execution>
             <id>autoreconf</id>
-            <phase>test-compile</phase>
+            <phase>process-sources</phase>
             <goals>
               <goal>exec</goal>
             </goals>
@@ -95,7 +58,7 @@
           </execution>
           <execution>
             <id>configure</id>
-            <phase>test-compile</phase>
+            <phase>process-sources</phase>
             <goals>
               <goal>exec</goal>
             </goals>
@@ -112,30 +75,68 @@
               </arguments>
             </configuration>
           </execution>
-          <!--execution> TODO: Why is this not working?!
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-sources</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <tasks>
+                <mkdir dir="target/c" />
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>build-c-client</id>
+            <phase>compile</phase>
+            <configuration>
+              <tasks>
+                <exec dir="${basedir}/target/c" executable="make" failonerror="true">
+                  <env key="LD_LIBRARY_PATH" value="${env.LD_LIBRARY_PATH};/usr/lib" />
+                  <env key="PATH" path="${env.PATH};${basedir};" />
+                  <env key="CALLER" value="ANT" />
+                  <env key="CLOVER_HOME" value="${basedir}/../../zookeeper-server/target" />
+                  <env key="base_dir" value="${basedir}/../.." />
+                  <arg line="clean install" />
+                </exec>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+          <execution>
             <id>test-cppunit</id>
             <phase>test</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
             <configuration>
-              <workingDirectory>${project.build.directory}/c</workingDirectory>
-              <executable>make</executable>
-              <environmentVariables>
-                <LD_LIBRARY_PATH>${env.LD_LIBRARY_PATH};/usr/lib</LD_LIBRARY_PATH>
-                <PATH>${env.PATH};${project.basedir};</PATH>
-                <CALLER>ANT</CALLER>
-                <CLOVER_HOME></CLOVER_HOME>
-                <base_dir>${project.basedir}/../..</base_dir>
-              </environmentVariables>
-              <arguments>
-                <argument>clean check</argument>
-              </arguments>
+              <!-- do not run cpp tests if tests are globally skipped -->
+              <skip>${skipTests}</skip>
+              <tasks>
+                <exec dir="${basedir}/target/c" executable="make" failonerror="true">
+                  <env key="LD_LIBRARY_PATH" value="${env.LD_LIBRARY_PATH};/usr/lib" />
+                  <env key="PATH" path="${env.PATH};${basedir};" />
+                  <env key="CALLER" value="ANT" />
+                  <env key="CLOVER_HOME" value="${basedir}/../../zookeeper-server/target" />
+                  <env key="base_dir" value="${basedir}/../.." />
+                  <arg line="check" />
+                </exec>
+              </tasks>
             </configuration>
-          </execution-->
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
+
 
 </project>
