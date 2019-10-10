@@ -44,6 +44,10 @@ nbdist/
 nb-configuration.xml
 nbactions.xml
 
+# vscode
+classes
+.vscode
+
 # Other
 *~
 logs/
@@ -82,5 +86,7 @@ zookeeper-server/src/main/resources/lib/ant-eclipse-*
 zookeeper-server/src/main/resources/lib/ivy-*
 zookeeper-server/src/main/java/org/apache/zookeeper/version/Info.java
 zookeeper-server/src/main/java/org/apache/zookeeper/version/VersionInfoMain.java
-zookeeper-server/src/main/java/org/apache/zookeeper/version/Info.java
 zookeeper-server/src/test/resources/
+
+# Python
+*.py[cod]
