@@ -111,7 +111,7 @@ public class FileTxnSnapLog {
                         + " is false). Please create this directory manually.");
             }
 
-            if (!this.dataDir.mkdirs()) {
+            if (!this.dataDir.mkdirs() && !this.dataDir.exists()) {
                 throw new DatadirException("Unable to create data directory "
                         + this.dataDir);
             }
@@ -131,7 +131,7 @@ public class FileTxnSnapLog {
                         + " is false). Please create this directory manually.");
             }
 
-            if (!this.snapDir.mkdirs()) {
+            if (!this.snapDir.mkdirs() && !this.snapDir.exists()) {
                 throw new DatadirException("Unable to create snap directory "
                         + this.snapDir);
             }
@@ -308,7 +308,7 @@ public class FileTxnSnapLog {
         FileTxnLog txnLog = new FileTxnLog(dataDir);
         return txnLog.read(zxid, fastForward);
     }
-    
+
     /**
      * process the transaction on the datatree
      * @param hdr the hdr of the transaction
@@ -404,7 +404,7 @@ public class FileTxnSnapLog {
         truncLog.close();
 
         // re-open the txnLog and snapLog
-        // I'd rather just close/reopen this object itself, however that 
+        // I'd rather just close/reopen this object itself, however that
         // would have a big impact outside ZKDatabase as there are other
         // objects holding a reference to this object.
         txnLog = new FileTxnLog(dataDir);
