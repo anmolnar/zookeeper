@@ -4504,7 +4504,7 @@ int zoo_add_auth(zhandle_t *zh,const char* scheme,const char* cert,
 
 static const char* format_endpoint_info(const struct sockaddr_storage* ep)
 {
-    static char buf[128] = { 0 };
+    static char buf[128+6] = { 0 };
     char addrstr[128] = { 0 };
     void *inaddr;
 #ifdef _WIN32
