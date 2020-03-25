@@ -277,10 +277,10 @@
     <hamcrest.version>1.3</hamcrest.version>
     <commons-cli.version>1.2</commons-cli.version>
     <jetty.version>9.4.26.v20200117</jetty.version>
-    <netty.version>4.1.45.Final</netty.version>
+    <netty.version>4.1.47.Final</netty.version>
     <jackson.version>2.9.10.1</jackson.version>
     <json.version>1.1.1</json.version>
-    <jline.version>2.11</jline.version>
+    <jline.version>2.12</jline.version>
     <snappy.version>1.1.7</snappy.version>
     <kerby.version>1.1.1</kerby.version>
     <bouncycastle.version>1.60</bouncycastle.version>
