@@ -320,6 +320,15 @@ public class QuorumUtil {
         return index;
     }
 
+    public boolean leaderExists() {
+        for (int i = 1; i <= ALL; i++) {
+            if (getPeer(i).peer.leader != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String getConnectionStringForServer(final int index) {
         return "127.0.0.1:" + getPeer(index).clientPort;
     }

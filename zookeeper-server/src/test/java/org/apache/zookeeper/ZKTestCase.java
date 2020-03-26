@@ -18,6 +18,8 @@
 
 package org.apache.zookeeper;
 
+import static org.junit.Assert.fail;
+import java.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.Rule;
@@ -74,5 +76,30 @@ public class ZKTestCase {
         }
 
     };
+    public interface WaitForCondition {
+        /**
+         * @return true when success
+         */
+        boolean evaluate();
+    }
+
+    /**
+     * Wait for condition to be true; otherwise fail the test if it exceed
+     * timeout
+     * @param msg       error message to print when fail
+     * @param condition condition to evaluate
+     * @param timeout   timeout in seconds
+     * @throws InterruptedException
+     */
+    public void waitFor(String msg, WaitForCondition condition, int timeout) throws InterruptedException {
+        final LocalDateTime deadline = LocalDateTime.now().plusSeconds(timeout);
+        while (LocalDateTime.now().isBefore(deadline)) {
+            if (condition.evaluate()) {
+                return;
+            }
+            Thread.sleep(100);
+        }
+        fail(msg);
+    }
 
 }
