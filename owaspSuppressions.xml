@@ -35,4 +35,9 @@
            False positive on Netty 4.x-->
       <cve>CVE-2018-12056</cve>
    </suppress>
+   <suppress>
+      <!-- it only affects the log4j SmtpAppender users. As Log4J 1.2 is EOL now, we can't fix this unless we
+           upgrade to log4j 2. See ZOOKEEPER-3817 -->
+      <cve>CVE-2020-9488</cve>
+   </suppress>
 </suppressions>
