@@ -1273,4 +1273,9 @@ public class QuorumCnxManager {
     public boolean connectedToPeer(long peerSid) {
         return senderWorkerMap.get(peerSid) != null;
     }
+
+    public boolean isReconfigEnabled() {
+        return self.isReconfigEnabled();
+    }
+
 }
