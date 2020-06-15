@@ -151,6 +151,15 @@ public class ZooKeeperServer implements SessionExpirer, ServerStats.Provider {
     }
 
     /**
+     * Keeping this constructor for backward compatibility (Curator is using it)
+     */
+    public ZooKeeperServer(FileTxnSnapLog txnLogFactory, int tickTime,
+            int minSessionTimeout, int maxSessionTimeout, ZKDatabase zkDb) {
+        this(txnLogFactory, tickTime, minSessionTimeout, maxSessionTimeout, zkDb,
+             QuorumPeerConfig.isReconfigEnabled());
+    }
+
+    /**
      * Creates a ZooKeeperServer instance. It sets everything up, but doesn't
      * actually start listening for clients until run() is invoked.
      *
