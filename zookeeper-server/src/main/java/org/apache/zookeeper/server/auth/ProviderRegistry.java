@@ -29,8 +29,10 @@ import org.apache.zookeeper.server.ZooKeeperServer;
 public class ProviderRegistry {
     private static final Logger LOG = LoggerFactory.getLogger(ProviderRegistry.class);
 
+    public static final String AUTHPROVIDER_PROPERTY_PREFIX = "zookeeper.authProvider.";
+
     private static boolean initialized = false;
-    private static HashMap<String, AuthenticationProvider> authenticationProviders =
+    private static final HashMap<String, AuthenticationProvider> authenticationProviders =
         new HashMap<String, AuthenticationProvider>();
 
     public static void initialize() {
@@ -44,7 +46,7 @@ public class ProviderRegistry {
             Enumeration<Object> en = System.getProperties().keys();
             while (en.hasMoreElements()) {
                 String k = (String) en.nextElement();
-                if (k.startsWith("zookeeper.authProvider.")) {
+                if (k.startsWith(AUTHPROVIDER_PROPERTY_PREFIX)) {
                     String className = System.getProperty(k);
                     try {
                         Class<?> c = ZooKeeperServer.class.getClassLoader()
