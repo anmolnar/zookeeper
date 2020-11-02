@@ -31,7 +31,23 @@ public class DigestAuthenticationProvider implements AuthenticationProvider {
     private static final Logger LOG =
         LoggerFactory.getLogger(DigestAuthenticationProvider.class);
 
-    /** specify a command line property with key of 
+    private static final String DEFAULT_DIGEST_ALGORITHM = "SHA1";
+
+    public static final String DIGEST_ALGORITHM_KEY = "zookeeper.DigestAuthenticationProvider.digestAlg";
+
+    private static final String DIGEST_ALGORITHM = System.getProperty(DIGEST_ALGORITHM_KEY, DEFAULT_DIGEST_ALGORITHM);
+
+    static {
+        try {
+            //sanity check, pre-check the availability of the algorithm to avoid some unexpected exceptions in the runtime
+            generateDigest(DIGEST_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("don't support this ACL digest algorithm: " + DIGEST_ALGORITHM + " in the current environment");
+        }
+        LOG.info("ACL digest algorithm is: {}", DIGEST_ALGORITHM);
+    }
+
+    /** specify a command line property with key of
      * "zookeeper.DigestAuthenticationProvider.superDigest"
      * and value of "super:<base64encoded(SHA1(password))>" to enable
      * super user access (i.e. acls disabled)
@@ -88,17 +104,18 @@ public class DigestAuthenticationProvider implements AuthenticationProvider {
         return i == 62 ? '+' : '/';
     }
 
-    static public String generateDigest(String idPassword)
-            throws NoSuchAlgorithmException {
-        String parts[] = idPassword.split(":", 2);
-        byte digest[] = MessageDigest.getInstance("SHA1").digest(
-                idPassword.getBytes());
+    public static String generateDigest(String idPassword) throws NoSuchAlgorithmException {
+        String[] parts = idPassword.split(":", 2);
+        byte[] digest = digest(idPassword);
         return parts[0] + ":" + base64Encode(digest);
     }
 
-    public KeeperException.Code 
-        handleAuthentication(ServerCnxn cnxn, byte[] authData)
-    {
+    // @VisibleForTesting
+    public static byte[] digest(String idPassword) throws NoSuchAlgorithmException {
+        return MessageDigest.getInstance(DIGEST_ALGORITHM).digest(idPassword.getBytes());
+    }
+
+    public KeeperException.Code handleAuthentication(ServerCnxn cnxn, byte[] authData) {
         String id = new String(authData);
         try {
             String digest = generateDigest(id);
@@ -127,7 +144,7 @@ public class DigestAuthenticationProvider implements AuthenticationProvider {
     }
 
     /** Call with a single argument of user:pass to generate authdata.
-     * Authdata output can be used when setting superDigest for example. 
+     * Authdata output can be used when setting superDigest for example.
      * @param args single argument of user:pass
      * @throws NoSuchAlgorithmException
      */

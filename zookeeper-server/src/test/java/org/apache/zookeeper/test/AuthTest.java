@@ -19,6 +19,9 @@
 package org.apache.zookeeper.test;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -27,17 +30,32 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.TestableZooKeeper;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher.Event.KeeperState;
+import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooDefs.Ids;
 import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.data.ACL;
+import org.apache.zookeeper.data.Id;
+import org.apache.zookeeper.server.auth.DigestAuthenticationProvider;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AuthTest extends ClientBase {
-    static {
+
+
+    @BeforeClass
+    public static void setup() {
         // password is test
-        System.setProperty("zookeeper.DigestAuthenticationProvider.superDigest",
-                "super:D/InIHSb7yEEbrWz8b9l71RjZJU=");    
+        // the default digestAlg is: SHA1
+        System.setProperty("zookeeper.DigestAuthenticationProvider.superDigest", "super:D/InIHSb7yEEbrWz8b9l71RjZJU=");
         System.setProperty("zookeeper.authProvider.1", "org.apache.zookeeper.test.InvalidAuthProvider");
+    }
+
+    @AfterClass
+    public static void teardown() {
+        System.clearProperty("zookeeper.DigestAuthenticationProvider.superDigest");
+        System.clearProperty(DigestAuthenticationProvider.DIGEST_ALGORITHM_KEY);
     }
 
     private final CountDownLatch authFailed = new CountDownLatch(1);
@@ -80,13 +98,13 @@ public class AuthTest extends ClientBase {
             zk.close();
         }
     }
-    
+
     @Test
     public void testBadAuthThenSendOtherCommands() throws Exception {
-        ZooKeeper zk = createClient();     
-        try {        
+        ZooKeeper zk = createClient();
+        try {
             zk.addAuthInfo("INVALID", "BAR".getBytes());
-            zk.exists("/foobar", false);             
+            zk.exists("/foobar", false);
             zk.getData("/path1", false, null);
             Assert.fail("Should get auth state error");
         } catch(KeeperException.AuthFailedException e) {
@@ -97,11 +115,11 @@ public class AuthTest extends ClientBase {
             }
         }
         finally {
-            zk.close();          
+            zk.close();
         }
     }
 
-    
+
     @Test
     public void testSuper() throws Exception {
         ZooKeeper zk = createClient();
@@ -147,7 +165,7 @@ public class AuthTest extends ClientBase {
             zk.close();
         }
     }
-    
+
     @Test
     public void testSuperACL() throws Exception {
     	 ZooKeeper zk = createClient();
@@ -160,15 +178,117 @@ public class AuthTest extends ClientBase {
              zk = createClient();
              zk.addAuthInfo("digest", "super:test".getBytes());
              zk.getData("/path1", false, null);
-             
+
              zk.setACL("/path1", Ids.READ_ACL_UNSAFE, -1);
              zk.create("/path1/foo", null, Ids.CREATOR_ALL_ACL, CreateMode.PERSISTENT);
-           
-             
+
+
              zk.setACL("/path1", Ids.OPEN_ACL_UNSAFE, -1);
-        	 
+
          } finally {
              zk.close();
          }
     }
+
+    @Test
+    public void testOrdinaryACL() throws Exception {
+        ZooKeeper zk = createClient();
+        try {
+            String path = "/path1";
+            zk.create(path, null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+            zk.addAuthInfo("digest", "username1:password1".getBytes());
+            List<ACL> list = new ArrayList<>();
+            int perm = ZooDefs.Perms.ALL;
+            String userPassword = "username1:password1";
+            Id id = new Id("auth", userPassword);
+            list.add(new ACL(perm, id));
+            zk.setACL(path, list, -1);
+            zk.close();
+
+            zk = createClient();
+            zk.addAuthInfo("digest", "super:test".getBytes());
+            zk.getData(path, false, null);
+            zk.close();
+
+            zk = createClient();
+            try {
+                zk.getData(path, false, null);
+                Assert.fail("should have NoAuthException");
+            } catch (KeeperException.NoAuthException e) {
+                // expected
+            }
+            zk.addAuthInfo("digest", "username1:password1".getBytes());
+            zk.getData(path, false, null);
+        } finally {
+            zk.close();
+        }
+    }
+
+    @Test
+    public void testGenerateDigest() throws NoSuchAlgorithmException {
+        Assert.assertEquals("super:D/InIHSb7yEEbrWz8b9l71RjZJU=",
+                            DigestAuthenticationProvider.generateDigest("super:test"));
+        Assert.assertEquals("super:yyuhPKumRtNj4r8GnSbbwuq1vhE=",
+                            DigestAuthenticationProvider.generateDigest("super:zookeeper"));
+        Assert.assertEquals("super:t6lQTvqID/Gl5Or0n4FYE6kKP8w=",
+                            DigestAuthenticationProvider.generateDigest(("super:foo")));
+        Assert.assertEquals("super:hTdNN4QH4isoRvCrQ1Jf7REREQ4=",
+                            DigestAuthenticationProvider.generateDigest(("super:bar")));
+    }
+
+    // This test is used to check the correctness of the algorithm
+    // For the same digest algorithm and input, the output of digest hash is the constant.
+    @Test
+    public void testDigest() throws NoSuchAlgorithmException {
+        Assert.assertEquals("a94a8fe5ccb19ba61c4c0873d391e987982fbbd3",
+                            getGeneratedDigestStr(DigestAuthenticationProvider.digest("test")));
+        Assert.assertEquals("8a0444ded963cf1118dd34aa1acaafec268c654d",
+                            getGeneratedDigestStr(DigestAuthenticationProvider.digest("zookeeper")));
+        Assert.assertEquals("0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33",
+                            getGeneratedDigestStr(DigestAuthenticationProvider.digest(("foo"))));
+        Assert.assertEquals("62cdb7020ff920e5aa642c3d4066950dd1f01f4d",
+                            getGeneratedDigestStr(DigestAuthenticationProvider.digest(("bar"))));
+    }
+
+    // this method is used to generate the digest String to help us to compare the result generated by some online tool easily
+    protected static String getGeneratedDigestStr(byte[] bytes) {
+        StringBuilder stringBuilder = new StringBuilder("");
+        if (bytes == null || bytes.length <= 0) {
+            return null;
+        }
+        for (int i = 0; i < bytes.length; i++) {
+            int v = bytes[i] & 0xFF;
+            String hv = Integer.toHexString(v);
+            if (hv.length() < 2) {
+                stringBuilder.append(0);
+            }
+            stringBuilder.append(hv);
+        }
+        return stringBuilder.toString();
+    }
+
+    public enum DigestAlgEnum {
+        SHA_1("SHA1"),
+        SHA_256("SHA-256"),
+        SHA3_256("SHA3-256");
+
+        private String name;
+
+        DigestAlgEnum(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public static List<String> getValues() {
+            List<String> digestList = new ArrayList<>();
+            for (DigestAlgEnum digest : values()) {
+                digestList.add(digest.getName());
+            }
+            return digestList;
+        }
+    }
+
 }
