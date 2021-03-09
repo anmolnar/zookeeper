@@ -680,9 +680,10 @@ public class QuorumCnxManager {
                 if (connectOne(sid, lastCommittedView.get(sid).electionAddr))
                     return;
             }
-            if (lastSeenQV != null && lastProposedView.containsKey(sid)
-                    && (!knownId || (lastProposedView.get(sid).electionAddr !=
-                    lastCommittedView.get(sid).electionAddr))) {
+            if (lastSeenQV != null
+                && lastProposedView.containsKey(sid)
+                && (!knownId
+                    || !lastProposedView.get(sid).electionAddr.equals(lastCommittedView.get(sid).electionAddr))) {
                 knownId = true;
                 if (connectOne(sid, lastProposedView.get(sid).electionAddr))
                     return;
