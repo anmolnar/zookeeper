@@ -37,6 +37,7 @@ import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
@@ -79,7 +80,8 @@ public class JettyAdminServer implements AdminServer {
              Integer.getInteger("zookeeper.admin.idleTimeout", DEFAULT_IDLE_TIMEOUT),
              System.getProperty("zookeeper.admin.commandURL", DEFAULT_COMMAND_URL),
              Integer.getInteger("zookeeper.admin.httpVersion", DEFAULT_HTTP_VERSION),
-             Boolean.getBoolean("zookeeper.admin.portUnification"));
+             Boolean.getBoolean("zookeeper.admin.portUnification"),
+             Boolean.getBoolean("zookeeper.admin.forceHttps"));
     }
 
     public JettyAdminServer(String address,
@@ -87,7 +89,8 @@ public class JettyAdminServer implements AdminServer {
                             int timeout,
                             String commandUrl,
                             int httpVersion,
-                            boolean portUnification) throws IOException, GeneralSecurityException {
+                            boolean portUnification,
+                            boolean forceHttps) throws IOException, GeneralSecurityException {
         this.port = port;
         this.idleTimeout = timeout;
         this.commandUrl = commandUrl;
@@ -96,7 +99,7 @@ public class JettyAdminServer implements AdminServer {
         server = new Server();
         ServerConnector connector = null;
 
-        if (!portUnification) {
+        if (!portUnification && !forceHttps) {
             connector = new ServerConnector(server);
         } else {
             SecureRequestCustomizer customizer = new SecureRequestCustomizer();
@@ -132,9 +135,16 @@ public class JettyAdminServer implements AdminServer {
                 sslContextFactory.setTrustStore(trustStore);
                 sslContextFactory.setTrustStorePassword(certAuthPassword);
 
-                connector = new ServerConnector(server,
-                        new UnifiedConnectionFactory(sslContextFactory, HttpVersion.fromVersion(httpVersion).asString()),
-                        new HttpConnectionFactory(config));
+                if (forceHttps) {
+                    connector = new ServerConnector(server,
+                            new SslConnectionFactory(sslContextFactory, HttpVersion.fromVersion(httpVersion).asString()),
+                            new HttpConnectionFactory(config));
+                } else {
+                    connector = new ServerConnector(
+                            server,
+                            new UnifiedConnectionFactory(sslContextFactory, HttpVersion.fromVersion(httpVersion).asString()),
+                            new HttpConnectionFactory(config));
+                }
             }
         }
 
