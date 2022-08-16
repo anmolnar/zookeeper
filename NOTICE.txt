@@ -1,5 +1,5 @@
 Apache Zookeeper
-Copyright 2022 Apache Software Foundation.  All Rights Reserved.
+Copyright 2022
 
 
 
@@ -12,34 +12,38 @@ Apache Commons Collections 3.2.2 : Apache License 2.0
 Apache Log4j 1.2.17 : Apache License 2.0
 Apache Yetus - Audience Annotations 0.5.0 : Apache License 2.0
 Apache ZooKeeper 3.5.5.7.1.7.0-551 : Apache License 2.0
-Apache ZooKeeper 3.5.5.7.2.12.0-291 : Apache License 2.0
+Apache ZooKeeper 3.5.5.7.2.14.0-149 : Apache License 2.0
 Apache ZooKeeper 3.5.7 : Apache License 2.0
-Apache ZooKeeper release-3.5.5-rc5 : Apache License 2.0
-Apache ZooKeeper - Assembly 3.5.5.7.1.7.64-1 : Apache License 2.0
+Apache ZooKeeper release-3.5.5 : Apache License 2.0
+Apache ZooKeeper release-3.5.5-rc3 : Apache License 2.0
+Apache ZooKeeper - Assembly 3.5.5.7.1.3.4-8 : Apache License 2.0
+Apache ZooKeeper - Assembly 3.5.5.7.1.3.9-1 : Apache License 2.0
 Apache ZooKeeper - Contrib - Loggraph 3.5.5.7.1.6.4-1 : Apache License 2.0
+Apache ZooKeeper - Contrib - Rest 3.6.0 : Apache License 2.0
 Apache ZooKeeper - Contrib - ZooInspector 3.5.5.7.1.5.15-3 : Apache License 2.0
 Apache ZooKeeper - Contrib - ZooInspector 3.7.0 : Apache License 2.0
-Apache ZooKeeper - Jute 3.5.5.7.2.12.0-291 : Apache License 2.0
+Apache ZooKeeper - Jute 3.5.5.7.1.7.0-551 : Apache License 2.0
 Apache ZooKeeper - Recipes - Election 3.5.5.7.1.6.44-1 : Apache License 2.0
 Apache ZooKeeper - Recipes - Lock 3.5.5.7.1.5.26-3 : Apache License 2.0
 Apache ZooKeeper - Recipes - Queue 3.5.5.7.2.12.0-291 : Apache License 2.0
 ASM 5.0.4 : BSD 3-clause "New" or "Revised" License
 ASM based accessors helper used by json-smart 1.2 : Apache License 2.0
-Bouncy Castle 1.60 : MIT License
-Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs 1.60 : MIT License
+Bouncy Castle 1.68 : MIT License
+Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs 1.68 : MIT License
+Byte Buddy byte-buddy-1.9.10 : Apache License 2.0
+byte-buddy-agent 1.9.10 : Apache License 2.0
 Commons IO 2.6 : Apache License 2.0
 FindBugs jsr305 3.0.2 : Apache License 2.0
 Hamcrest 1.3 : BSD 3-clause "New" or "Revised" License
 jackson-annotations 2.10.5 : Apache License 2.0
-jackson-core 2.10.5 : Apache License 2.0
 jackson-databind 2.10.5.1 : Apache License 2.0
 jansi 1.11 : Apache License 2.0
 jansi-native 1.5 : Apache License 2.0
 Java Servlet API 3.1.0 : Common Development and Distribution License 1.1
 	Dual licensed under CDDL and GPLv2
 JCIP Annotations under Apache License 1.0-1 : Apache License 2.0
-Jetty: Java based HTTP/1.x, HTTP/2, Servlet, WebSocket Server 9.4.39.v20210325 : Apache License 2.0
-Jetty: Java based HTTP/1.x, HTTP/2, Servlet, WebSocket Server 9.4.40.v20210413 : Apache License 2.0
+Jetty: Java based HTTP/1.x, HTTP/2, Servlet, WebSocket Server 9.4.40.v20210413 : (Apache License 2.0 OR Eclipse Public License 1.0)
+Jetty: Java based HTTP/1.x, HTTP/2, Servlet, WebSocket Server 9.4.43.v20210629 : (Apache License 2.0 OR Eclipse Public License 1.0)
 JLine - Java Console input Library 2.12 : BSD 3-clause "New" or "Revised" License
 json-simple 1.1.1 : Apache License 2.0
 json-smart 2.3 : Apache License 2.0
@@ -58,14 +62,16 @@ Kerby-kerb Crypto 1.1.1 : Apache License 2.0
 Kerby-kerb Identity 1.1.1 : Apache License 2.0
 Kerby-kerb Server 1.1.1 : Apache License 2.0
 Kerby-kerb Util 1.1.1 : Apache License 2.0
-Mockito 1.10.19 : MIT License
-Netty Project 4.1.60 : Apache License 2.0
+Mockito 2.27.0 : MIT License
 Netty Project 4.1.68.Final : Apache License 2.0
 Netty/Codec/Redis 4.1.72.Final : Apache License 2.0
+Netty/Codec/Redis 4.1.78.Final : Apache License 2.0
 Netty/Codec/SMTP 4.1.48.Final : Apache License 2.0
 Netty/Transport/Native/KQueue 4.1.68.Final-redhat-00002 : Apache License 2.0
 Netty/Transport/Native/Unix/Common 4.1.68.Final-redhat-00002 : Apache License 2.0
 Nimbus-JOSE-JWT 4.41.2 : Apache License 2.0
+objenesis 2.6 : Apache License 2.0
+org.codehaus.jackson:jackson-asl 2.10.5 : Apache License 2.0
 SLF4J API Module 1.7.30 : MIT License
 SLF4J LOG4J-12 Binding 1.7.30 : MIT License
 Token provider 1.1.1 : Apache License 2.0
@@ -73,7 +79,7 @@ Token provider 1.1.1 : Apache License 2.0
 Licenses: 
 
 Apache License 2.0
-(Apache Commons CLI 1.4, Apache Commons Collections 3.2.2, Apache Log4j 1.2.17, Apache Yetus - Audience Annotations 0.5.0, Apache ZooKeeper 3.5.5.7.1.7.0-551, Apache ZooKeeper 3.5.5.7.2.12.0-291, Apache ZooKeeper 3.5.7, Apache ZooKeeper release-3.5.5-rc5, Apache ZooKeeper - Assembly 3.5.5.7.1.7.64-1, Apache ZooKeeper - Contrib - Loggraph 3.5.5.7.1.6.4-1, Apache ZooKeeper - Contrib - ZooInspector 3.5.5.7.1.5.15-3, Apache ZooKeeper - Contrib - ZooInspector 3.7.0, Apache ZooKeeper - Jute 3.5.5.7.2.12.0-291, Apache ZooKeeper - Recipes - Election 3.5.5.7.1.6.44-1, Apache ZooKeeper - Recipes - Lock 3.5.5.7.1.5.26-3, Apache ZooKeeper - Recipes - Queue 3.5.5.7.2.12.0-291, ASM based accessors helper used by json-smart 1.2, Commons IO 2.6, FindBugs jsr305 3.0.2, jackson-annotations 2.10.5, jackson-core 2.10.5, jackson-databind 2.10.5.1, jansi 1.11, jansi-native 1.5, JCIP Annotations under Apache License 1.0-1, Jetty: Java based HTTP/1.x, HTTP/2, Servlet, WebSocket Server 9.4.39.v20210325, Jetty: Java based HTTP/1.x, HTTP/2, Servlet, WebSocket Server 9.4.40.v20210413, json-simple 1.1.1, json-smart 2.3, Kerb Simple Kdc 1.1.1, Kerby ASN1 Project 1.1.1, Kerby Config 1.1.1, Kerby PKIX Project 1.1.1, Kerby Util 1.1.1, Kerby XDR Project 1.1.1, Kerby-kerb Admin 1.1.1, Kerby-kerb Client 1.1.1, Kerby-kerb Common 1.1.1, Kerby-kerb core 1.1.1, Kerby-kerb Crypto 1.1.1, Kerby-kerb Identity 1.1.1, Kerby-kerb Server 1.1.1, Kerby-kerb Util 1.1.1, Netty Project 4.1.60, Netty Project 4.1.68.Final, Netty/Codec/Redis 4.1.72.Final, Netty/Codec/SMTP 4.1.48.Final, Netty/Transport/Native/KQueue 4.1.68.Final-redhat-00002, Netty/Transport/Native/Unix/Common 4.1.68.Final-redhat-00002, Nimbus-JOSE-JWT 4.41.2, Token provider 1.1.1)
+(Apache Commons CLI 1.4, Apache Commons Collections 3.2.2, Apache Log4j 1.2.17, Apache Yetus - Audience Annotations 0.5.0, Apache ZooKeeper 3.5.5.7.1.7.0-551, Apache ZooKeeper 3.5.5.7.2.14.0-149, Apache ZooKeeper 3.5.7, Apache ZooKeeper release-3.5.5, Apache ZooKeeper release-3.5.5-rc3, Apache ZooKeeper - Assembly 3.5.5.7.1.3.4-8, Apache ZooKeeper - Assembly 3.5.5.7.1.3.9-1, Apache ZooKeeper - Contrib - Loggraph 3.5.5.7.1.6.4-1, Apache ZooKeeper - Contrib - Rest 3.6.0, Apache ZooKeeper - Contrib - ZooInspector 3.5.5.7.1.5.15-3, Apache ZooKeeper - Contrib - ZooInspector 3.7.0, Apache ZooKeeper - Jute 3.5.5.7.1.7.0-551, Apache ZooKeeper - Recipes - Election 3.5.5.7.1.6.44-1, Apache ZooKeeper - Recipes - Lock 3.5.5.7.1.5.26-3, Apache ZooKeeper - Recipes - Queue 3.5.5.7.2.12.0-291, ASM based accessors helper used by json-smart 1.2, Byte Buddy byte-buddy-1.9.10, byte-buddy-agent 1.9.10, Commons IO 2.6, FindBugs jsr305 3.0.2, jackson-annotations 2.10.5, jackson-databind 2.10.5.1, jansi 1.11, jansi-native 1.5, JCIP Annotations under Apache License 1.0-1, Jetty: Java based HTTP/1.x, HTTP/2, Servlet, WebSocket Server 9.4.40.v20210413, Jetty: Java based HTTP/1.x, HTTP/2, Servlet, WebSocket Server 9.4.43.v20210629, json-simple 1.1.1, json-smart 2.3, Kerb Simple Kdc 1.1.1, Kerby ASN1 Project 1.1.1, Kerby Config 1.1.1, Kerby PKIX Project 1.1.1, Kerby Util 1.1.1, Kerby XDR Project 1.1.1, Kerby-kerb Admin 1.1.1, Kerby-kerb Client 1.1.1, Kerby-kerb Common 1.1.1, Kerby-kerb core 1.1.1, Kerby-kerb Crypto 1.1.1, Kerby-kerb Identity 1.1.1, Kerby-kerb Server 1.1.1, Kerby-kerb Util 1.1.1, Netty Project 4.1.68.Final, Netty/Codec/Redis 4.1.72.Final, Netty/Codec/Redis 4.1.78.Final, Netty/Codec/SMTP 4.1.48.Final, Netty/Transport/Native/KQueue 4.1.68.Final-redhat-00002, Netty/Transport/Native/Unix/Common 4.1.68.Final-redhat-00002, Nimbus-JOSE-JWT 4.41.2, objenesis 2.6, org.codehaus.jackson:jackson-asl 2.10.5, Token provider 1.1.1)
 
 Apache License
 Version 2.0, January 2004
@@ -264,10 +270,7 @@ BSD 3-clause "New" or "Revised" License
 
 BSD License
 
-
-
 Copyright (c) 2000-2006, www.hamcrest.org
-
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -726,7 +729,7 @@ COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.1
 ---
 
 Eclipse Public License 1.0
-(JUnit 4.13.1)
+(Jetty: Java based HTTP/1.x, HTTP/2, Servlet, WebSocket Server 9.4.40.v20210413, Jetty: Java based HTTP/1.x, HTTP/2, Servlet, WebSocket Server 9.4.43.v20210629, JUnit 4.13.1)
 
 Eclipse Public License - v 1.0
 ==============================
@@ -941,7 +944,7 @@ resulting litigation.
 ---
 
 MIT License
-(Bouncy Castle 1.60)
+(Bouncy Castle 1.68)
 
 2010, Thierry Carrez <thierry.carrez@ubuntu.com>
            2011, James Page <james.page@ubuntu.com>
@@ -974,32 +977,34 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of
 ---
 
 MIT License
-(Mockito 1.10.19)
+(Mockito 2.27.0)
 
-License: MIT
+The MIT License
+
+Copyright (c) 2007 Mockito contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE
 
 ---
 
 MIT License
-(Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs 1.60, SLF4J API Module 1.7.30, SLF4J LOG4J-12 Binding 1.7.30)
+(Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs 1.68, SLF4J API Module 1.7.30, SLF4J LOG4J-12 Binding 1.7.30)
 
 The MIT License
 ===============
