@@ -47,7 +47,7 @@ public class QuorumKerberosAuthTest extends KerberosSecurityTestcase {
                 + "       storeKey=true\n"
                 + "       useTicketCache=false\n"
                 + "       debug=false\n"
-                + "       principal=\"" + KerberosTestUtils.getServerPrincipal() + "\";\n" + "};\n"
+                + "       principal=\"" + KerberosTestUtils.replaceHostPattern(KerberosTestUtils.getHostServerPrincipal()) + "\";\n" + "};\n"
                 + "QuorumLearner {\n"
                 + "       com.sun.security.auth.module.Krb5LoginModule required\n"
                 + "       useKeyTab=true\n"
@@ -55,7 +55,7 @@ public class QuorumKerberosAuthTest extends KerberosSecurityTestcase {
                 + "       storeKey=true\n"
                 + "       useTicketCache=false\n"
                 + "       debug=false\n"
-                + "       principal=\"" + KerberosTestUtils.getLearnerPrincipal() + "\";\n" + "};\n");
+                + "       principal=\"" + KerberosTestUtils.replaceHostPattern(KerberosTestUtils.getHostLearnerPrincipal()) + "\";\n" + "};\n");
         setupJaasConfig(jaasEntries);
     }
 
@@ -63,10 +63,10 @@ public class QuorumKerberosAuthTest extends KerberosSecurityTestcase {
     public void setUp() throws Exception {
         // create keytab
         keytabFile = new File(KerberosTestUtils.getKeytabFile());
-        String learnerPrincipal = KerberosTestUtils.getLearnerPrincipal();
-        String serverPrincipal = KerberosTestUtils.getServerPrincipal();
-        learnerPrincipal = learnerPrincipal.substring(0, learnerPrincipal.lastIndexOf("@"));
-        serverPrincipal = serverPrincipal.substring(0, serverPrincipal.lastIndexOf("@"));
+        String learnerPrincipal = KerberosTestUtils.getHostLearnerPrincipal();
+        String serverPrincipal = KerberosTestUtils.getHostServerPrincipal();
+        learnerPrincipal = KerberosTestUtils.replaceHostPattern(learnerPrincipal.substring(0, learnerPrincipal.lastIndexOf("@")));
+        serverPrincipal = KerberosTestUtils.replaceHostPattern(serverPrincipal.substring(0, serverPrincipal.lastIndexOf("@")));
         getKdc().createPrincipal(keytabFile, learnerPrincipal, serverPrincipal);
     }
 
