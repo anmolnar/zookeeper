@@ -40,9 +40,11 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertSame;
 
 public class SaslAuthTest extends ClientBase {
     @BeforeClass
@@ -244,14 +246,44 @@ public class SaslAuthTest extends ClientBase {
             assertNotNull(zooKeeperSaslClient);
             sendThread.join(CONNECTION_TIMEOUT);
             eventThread.join(CONNECTION_TIMEOUT);
-            Field loginField = zooKeeperSaslClient.getClass().getDeclaredField("login");
-            loginField.setAccessible(true);
-            Login login = (Login) loginField.get(zooKeeperSaslClient);
             // If login is null, this means ZooKeeperSaslClient#shutdown method has been called which in turns
             // means that Login#shutdown has been called.
-            assertNull(login);
-            Assert.assertFalse("SendThread did not shutdown after authFail", sendThread.isAlive());
-            Assert.assertFalse("EventThread did not shutdown after authFail", eventThread.isAlive());
+            assertNull(sendThread.getLogin());
+            assertFalse("SendThread did not shutdown after authFail", sendThread.isAlive());
+            assertFalse("EventThread did not shutdown after authFail", eventThread.isAlive());
+        } finally {
+            if (zk != null) {
+                zk.close();
+            }
+        }
+    }
+
+    @Test
+    public void testDisconnectNotCreatingLoginThread() throws Exception {
+        MyWatcher watcher = new MyWatcher();
+        ZooKeeper zk = null;
+        try {
+            zk = new ZooKeeper(hostPort, CONNECTION_TIMEOUT, watcher);
+            watcher.waitForConnected(CONNECTION_TIMEOUT);
+            zk.getData("/", false, null);
+
+            Field cnxnField = zk.getClass().getDeclaredField("cnxn");
+            cnxnField.setAccessible(true);
+            ClientCnxn clientCnxn = (ClientCnxn) cnxnField.get(zk);
+            Field sendThreadField = clientCnxn.getClass().getDeclaredField("sendThread");
+            sendThreadField.setAccessible(true);
+            SendThread sendThread = (SendThread) sendThreadField.get(clientCnxn);
+
+            Login l1 = sendThread.getLogin();
+            assertNotNull(l1);
+
+            stopServer();
+            watcher.waitForDisconnected(CONNECTION_TIMEOUT);
+            startServer();
+            watcher.waitForConnected(CONNECTION_TIMEOUT);
+            zk.getData("/", false, null);
+
+            assertSame("Login thread should not been recreated on disconnect", l1, sendThread.getLogin());
         } finally {
             if (zk != null) {
                 zk.close();
