@@ -21,14 +21,15 @@
 
 package org.apache.zookeeper.server.admin;
 
+import org.eclipse.jetty.io.Connection;
+import org.eclipse.jetty.io.EndPoint;
+import org.eclipse.jetty.util.Callback;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadPendingException;
 import java.nio.channels.WritePendingException;
-import org.eclipse.jetty.io.Connection;
-import org.eclipse.jetty.io.EndPoint;
-import org.eclipse.jetty.util.Callback;
 
 public class ReadAheadEndpoint implements EndPoint {
 
@@ -38,13 +39,15 @@ public class ReadAheadEndpoint implements EndPoint {
     private int leftToRead;
     private IOException pendingException = null;
 
+    @Deprecated
     @Override
     public InetSocketAddress getLocalAddress() {
-        return endPoint.getLocalAddress();
+        return (InetSocketAddress) endPoint.getLocalSocketAddress();
     }
+    @Deprecated
     @Override
     public InetSocketAddress getRemoteAddress() {
-        return endPoint.getRemoteAddress();
+        return (InetSocketAddress) endPoint.getRemoteSocketAddress();
     }
     @Override
     public boolean isOpen() {
@@ -87,12 +90,12 @@ public class ReadAheadEndpoint implements EndPoint {
         endPoint.onOpen();
     }
     @Override
-    public void onClose() {
-        endPoint.onClose();
+    public void onClose(Throwable throwable) {
+        endPoint.onClose(throwable);
     }
     @Override
-    public boolean isOptimizedForDirectBuffers() {
-        return endPoint.isOptimizedForDirectBuffers();
+    public void close(Throwable throwable) {
+        endPoint.close(throwable);
     }
     @Override
     public boolean isFillInterested() {

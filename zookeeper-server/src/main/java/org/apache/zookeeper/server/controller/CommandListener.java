@@ -19,13 +19,14 @@
 package org.apache.zookeeper.server.controller;
 
 import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.zookeeper.server.ExitCode;
 import org.apache.zookeeper.util.ServiceUtils;
-import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.ee9.nested.AbstractHandler;
+import org.eclipse.jetty.ee9.nested.Request;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +49,8 @@ public class CommandListener {
 
             server = new Server(port);
             LOG.info("CommandListener server host: {} with port: {}", host, port);
-            server.setHandler(new CommandHandler());
+            CommandHandler commandHandler = new CommandHandler();
+            commandHandler.setServer(server);
             server.start();
         } catch (Exception ex) {
             LOG.error("Failed to instantiate CommandListener.", ex);
